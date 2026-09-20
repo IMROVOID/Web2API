@@ -5,6 +5,7 @@
 # Web2API
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![CI](https://github.com/IMROVOID/Web2API/actions/workflows/test.yml/badge.svg)](https://github.com/IMROVOID/Web2API/actions/workflows/test.yml)
 [![Node.js Version](https://img.shields.io/badge/Node.js-%3E%3D22.0.0-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Cloudflare Workers](https://img.shields.io/badge/Cloudflare-Workers-F38020?logo=cloudflare&logoColor=white)](https://workers.cloudflare.com/)
@@ -35,6 +36,7 @@
   - [429 Quota Exhaustion & Rate Limits](#429-quota-exhaustion--rate-limits)
   - [Environment Variables](#environment-variables)
 - [Development & Testing](#development--testing)
+  - [Continuous Integration (CI)](#continuous-integration-ci)
 - [Disclaimer & Legal Notice](#disclaimer--legal-notice)
 - [License](#license)
 
@@ -74,7 +76,7 @@ Modern coding agents like Claude Code, Codex, Cursor, Antigravity, OpenCode, etc
 #### Step 1: Clone and Install
 
 ```bash
-git clone https://github.com/your-org/Web2API.git
+git clone https://github.com/IMROVOID/Web2API.git
 cd Web2API
 npm install
 ```
@@ -846,6 +848,9 @@ Add configuration:
 
 ```
 Web2API/
+├── .github/
+│   └── workflows/
+│       └── test.yml             # Automated CI test & typecheck workflow
 ├── src/
 │   ├── types.ts                 # OpenAI schemas, upstream contracts, model definitions
 │   ├── config.ts                # Model catalog, aliases, browser headers, defaults
@@ -947,6 +952,23 @@ Build standalone bundles:
 
 ```bash
 npm run build
+```
+
+### Continuous Integration (CI)
+
+Web2API includes a GitHub Actions pipeline ([`.github/workflows/test.yml`](./.github/workflows/test.yml)) that automatically runs on every `push` and `pull_request` to `main`:
+- Typechecking (`npm run typecheck`)
+- Full test suite execution (`npm test`)
+- Bundle build verification (`npm run build`)
+
+#### Skipping Tests on Commit
+
+To skip automated tests on documentation or non-functional commits, include any of the following tags in your commit message:
+- `[skip test]` or `[skip tests]`
+- `[skip ci]` or `[ci skip]`
+
+```bash
+git commit -m "docs: update README [skip test]"
 ```
 
 ## Disclaimer & Legal Notice
