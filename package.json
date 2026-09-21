@@ -2,14 +2,26 @@
   "name": "web2api-proxy",
   "version": "1.0.0",
   "description": "Universal OpenAI-compatible reverse proxy for web chat interfaces (FreeModels.Pro) with agent tool calling support",
-  "main": "dist/index.js",
   "type": "module",
+  "main": "./dist/cli.js",
+  "bin": {
+    "web2api": "dist/cli.js",
+    "web2api-proxy": "dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "worker.js",
+    "public",
+    "README.md",
+    "LICENSE"
+  ],
   "scripts": {
-    "dev": "tsx watch src/server.ts",
-    "start": "tsx src/server.ts",
-    "build": "esbuild src/server.ts --bundle --platform=node --format=esm --target=node22 --outfile=dist/server.js && esbuild src/index.ts --bundle --platform=neutral --format=esm --target=es2022 --outfile=worker.js",
+    "dev": "tsx watch src/cli/index.ts start",
+    "start": "tsx src/cli/index.ts start",
+    "build": "tsx scripts/build.ts",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/**/*.test.ts",
+    "prepublishOnly": "npm run typecheck && npm test && npm run build",
     "deploy": "wrangler deploy"
   },
   "keywords": [
@@ -18,10 +30,22 @@
     "agent",
     "tool-calling",
     "cloudflare-workers",
+    "freemodels",
+    "claude-code",
+    "cursor",
+    "cline",
     "hono"
   ],
-  "author": "",
+  "author": "IMROVOID",
   "license": "GPL-3.0-or-later",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IMROVOID/Web2API.git"
+  },
+  "bugs": {
+    "url": "https://github.com/IMROVOID/Web2API/issues"
+  },
+  "homepage": "https://github.com/IMROVOID/Web2API#readme",
   "dependencies": {
     "@hono/node-server": "^1.13.8",
     "hono": "^4.7.2"

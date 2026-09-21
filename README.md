@@ -5,6 +5,7 @@
 # Web2API
 
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![npm version](https://img.shields.io/npm/v/web2api-proxy.svg?logo=npm&logoColor=white)](https://www.npmjs.com/package/web2api-proxy)
 [![CI](https://github.com/IMROVOID/Web2API/actions/workflows/test.yml/badge.svg)](https://github.com/IMROVOID/Web2API/actions/workflows/test.yml)
 [![Node.js Version](https://img.shields.io/badge/Node.js-%3E%3D22.0.0-339933?logo=node.js&logoColor=white)](https://nodejs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-7.0.2-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -24,7 +25,7 @@
 - [What is Web2API?](#what-is-web2api)
 - [Key Features](#key-features)
 - [Quick Start](#quick-start)
-  - [Method 1: Local Daemon](#method-1-local-daemon)
+  - [Method 1: Local Daemon (NPX / NPM)](#method-1-local-daemon-npx--npm)
   - [Method 2: Cloudflare Workers (Serverless)](#method-2-cloudflare-workers-serverless)
 - [Model Catalog & Aliases](#model-catalog--aliases)
   - [Underlying Model Reality (Nemotron-3 Super 120B)](#underlying-model-reality-nemotron-3-super-120b)
@@ -59,7 +60,7 @@ Modern coding agents like Claude Code, Codex, Cursor, Antigravity, OpenCode, etc
 
 - **Unlock Free Web Models for Agents**: Access `claude-sonnet-5`, `claude-fable-5`, `sol` (GPT 5.6 Sol), `terra` (GPT 5.6 Terra), `glm-5.2`, and `kimi-k3` directly from coding agents.
 - **Dual Operational Modes**:
-  - **Local Daemon**: Runs on `http://localhost:8000` via `@hono/node-server` with hot-reloading.
+  - **Local Daemon**: Runs on `http://localhost:8000` via `@hono/node-server` with instant NPX execution or global CLI install.
   - **Cloudflare Worker**: Standalone 82 KB bundle (`worker.js`) ready for copy-paste into the Cloudflare Dashboard or deployment via Wrangler.
 - **Smart Tool Coercion**: Converts OpenAI `tools` definitions into strict system instructions, enforcing pure JSON output across web models that lack native function-calling APIs.
 - **Resilient JSON Extractor**: Strips markdown fences, extracts outer `{...}` or `[...]` blocks via balanced-brace parsing, and repairs unescaped newlines in diffs.
@@ -71,32 +72,67 @@ Modern coding agents like Claude Code, Codex, Cursor, Antigravity, OpenCode, etc
 
 ## Quick Start
 
-### Method 1: Local Daemon
+### Method 1: Local Daemon (NPX / NPM)
 
-#### Step 1: Clone and Install
+#### Option A: Run Instantly with NPX (Zero Install)
+
+Run the local proxy daemon immediately with no clone or install needed:
+
+```bash
+npx web2api-proxy
+```
+
+Or with custom port and API key:
+
+```bash
+npx web2api-proxy start --port 8080 --key sk-my-secret
+```
+
+Test upstream connectivity and models:
+
+```bash
+npx web2api-proxy check
+```
+
+#### Option B: Global CLI Installation
+
+Install globally to make the `web2api` command available anywhere on your system:
+
+```bash
+npm install -g web2api-proxy
+```
+
+Then run:
+
+```bash
+web2api start
+web2api check
+web2api --help
+```
+
+#### CLI Options & Flags
+
+| Flag | Shorthand | Environment Variable | Default | Description |
+|---|---|---|---|---|
+| `--port` | `-p` | `PORT` | `8000` | Port for the local server |
+| `--host` | | `HOST` | `127.0.0.1` | Host address to bind to |
+| `--key` | `-k` | `API_KEY` | *(None)* | Require Bearer API key authentication |
+| `--upstream` | `-u` | `UPSTREAM_URL` | `https://freemodels-chat...` | Target web chat backend URL |
+| `--model` | `-m` | `DEFAULT_MODEL` | `claude-sonnet-5` | Default model fallback |
+| `--help` | `-h` | | | Show CLI help and options |
+| `--version` | `-v` | | | Show installed version |
+
+#### Option C: Clone and Run from Source
 
 ```bash
 git clone https://github.com/IMROVOID/Web2API.git
 cd Web2API
 npm install
-```
-
-#### Step 2: Start the Router
-
-Run development server with hot-reload:
-
-```bash
 npm run dev
 ```
 
-Or build and run production server:
-
-```bash
-npm run build
-npm start
-```
-
 Your local endpoint is available at `http://localhost:8000/v1`. Default API key for all clients is `sk-web2api-local` (or any string when `API_KEY` is not set).
+
 
 ### Method 2: Cloudflare Workers (Serverless)
 
